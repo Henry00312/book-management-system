@@ -39,61 +39,82 @@ book-management-system/
 │   └── utils/               # Utilidades
 ├── public/                  # Frontend
 ├── server.js                # Punto de entrada
+├── .env.example             # Template de variables de entorno
 └── package.json
 ```
 
-## Instalación
+## ⚙️ Instalación y Configuración
 
 ### Prerrequisitos
-- Node.js (v14+)
-- MongoDB (v4.0+)
-- npm
+- **Node.js** (v14 o superior)
+- **MongoDB** (v4.0 o superior) - Local o MongoDB Atlas
+- **npm** o **yarn**
+- **Git**
 
-### Configuración
+### Paso a Paso
 
 1. **Clonar el repositorio**
-```bash
-git clone https://github.com/Henry00312/book-management-system.git
-cd book-management-system
-```
+   ```bash
+   git clone https://github.com/Henry00312/book-management-system.git
+   cd book-management-system
+   ```
 
 2. **Instalar dependencias**
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. **Configurar variables de entorno**
-```bash
-# Crear archivo .env (ver .env.example)
-cp .env.example .env
-```
-
-**Configuración mínima en `.env`:**
-```env
-NODE_ENV=development
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/bookstore
-JWT_SECRET=tu-clave-secreta-aqui
-JWT_EXPIRES_IN=24h
-```
+   ```bash
+   # Copiar template de configuración
+   cp .env.example .env
+   ```
+   
+   **Editar el archivo `.env` con tus valores:**
+   
+   - **MongoDB URI**: 
+     - **Local**: `mongodb://localhost:27017/bookstore`
+     - **Atlas**: `mongodb+srv://usuario:password@cluster.xxxxx.mongodb.net/bookstore`
+   
+   - **JWT Secret**: Genera una clave segura:
+     ```bash
+     node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+     ```
+   
+   - **Configuración mínima requerida**:
+     ```env
+     NODE_ENV=development
+     PORT=3000
+     MONGODB_URI=mongodb://localhost:27017/bookstore
+     JWT_SECRET=tu_clave_secreta_super_segura_de_64_caracteres
+     JWT_EXPIRES_IN=24h
+     ```
 
 4. **Iniciar la aplicación**
-```bash
-# Desarrollo
-npm run dev
+   ```bash
+   # Desarrollo (con nodemon)
+   npm run dev
+   
+   # Producción
+   npm start
+   ```
 
-# Producción
-npm start
+5. **Verificar instalación**
+   - **Frontend**: http://localhost:3000
+   - **API**: http://localhost:3000/api
+   - **Health Check**: http://localhost:3000/health
+   - **Swagger Docs**: http://localhost:3000/api-docs (solo en desarrollo)
+
+### Scripts Disponibles
+
+```bash
+npm start          # Ejecutar en producción
+npm run dev        # Ejecutar en desarrollo con nodemon
+npm test           # Ejecutar pruebas (si las tienes)
+npm run lint       # Verificar código con ESLint
 ```
 
-## Acceso
-
-- **Frontend**: http://localhost:3000
-- **API**: http://localhost:3000/api
-- **Documentación**: http://localhost:3000/api-docs
-- **Health Check**: http://localhost:3000/health
-
-## redenciales de Prueba
+## Credenciales de Prueba
 
 El sistema crea automáticamente un usuario administrador:
 
@@ -198,33 +219,51 @@ curl "http://localhost:3000/api/books?search=García&estado=disponible&page=1&li
 ## Variables de Entorno
 
 ```env
-# Básicas
+# ==============================================
+# CONFIGURACIÓN BÁSICA - SISTEMA DE GESTIÓN DE LIBROS
+# ==============================================
+
+# Entorno de ejecución
 NODE_ENV=development
 PORT=3000
 
-# Base de datos
+# ----------------------------------------------
+# BASE DE DATOS
+# ----------------------------------------------
+# MongoDB URI
 MONGODB_URI=mongodb://localhost:27017/bookstore
 
-# JWT
-JWT_SECRET=clave-secreta-segura
+# ----------------------------------------------
+# AUTENTICACIÓN JWT
+# ----------------------------------------------
+# Clave secreta JWT (mínimo 64 caracteres)
+JWT_SECRET=tu_jwt_secret_super_seguro_de_al_menos_64_caracteres_aqui
 JWT_EXPIRES_IN=24h
 JWT_ALGORITHM=HS256
 JWT_ISSUER=book-management-system
 JWT_AUDIENCE=book-management-users
 
-# Desarrollo
+# ----------------------------------------------
+# DESARROLLO
+# ----------------------------------------------
 DEV_AUTO_SEED=true
 DEV_ENABLE_SWAGGER=true
 ```
+
+> **📝 Nota**: Copia `.env.example` a `.env` y configura tus propios valores. Nunca subas el archivo `.env` a GitHub.
 
 ## Solución de Problemas
 
 ### MongoDB no conecta
 ```bash
-# Verificar que MongoDB esté ejecutándose
+# Linux/Mac - Verificar que MongoDB esté ejecutándose
 sudo systemctl status mongodb
-# o en Windows
+
+# Windows
 net start MongoDB
+
+# Docker
+docker run -d -p 27017:27017 --name mongodb mongo:latest
 ```
 
 ### Puerto ocupado
@@ -233,10 +272,26 @@ net start MongoDB
 PORT=3001
 ```
 
-### Error de token
+### Error de token JWT
 - Verificar que `JWT_SECRET` esté configurado en `.env`
-- Asegurarse de incluir `Bearer ` antes del token
-- Verificar que el token no haya expirado
+- Asegurarse de incluir `Bearer ` antes del token en el header
+- Verificar que el token no haya expirado (24h por defecto)
+- Comprobar que el formato sea: `Authorization: Bearer tu_token_aqui`
+
+### Error de dependencias
+```bash
+# Limpiar cache e instalar de nuevo
+rm -rf node_modules package-lock.json
+npm install
+```
+
+## Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'Add: nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
 
 ## Contacto
 
