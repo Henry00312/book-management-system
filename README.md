@@ -110,7 +110,6 @@ book-management-system/
 ```bash
 npm start          # Ejecutar en producción
 npm run dev        # Ejecutar en desarrollo con nodemon
-npm test           # Ejecutar pruebas (si las tienes)
 npm run lint       # Verificar código con ESLint
 ```
 
