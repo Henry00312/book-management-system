@@ -1,6 +1,6 @@
-# 📚 Sistema de Gestión de Libros
+#  Sistema de Gestión de Libros
 
-Sistema de gestión de libros desarrollado con **Node.js**, **Express** y **MongoDB**. Implementa una API REST completa con autenticación JWT y interfaz web.
+Sistema de gestión de libros desarrollado con **Node.js**, **Express** y **MongoDB**. Implementa una API REST completa con autenticación JWT e interfaz web.
 
 ## Características
 
@@ -43,7 +43,7 @@ book-management-system/
 └── package.json
 ```
 
-## ⚙️ Instalación y Configuración
+##  Instalación y Configuración
 
 ### Prerrequisitos
 - **Node.js** (v14 o superior)
